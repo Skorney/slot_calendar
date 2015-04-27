@@ -1,0 +1,12 @@
+{
+    "name": "Mariam",
+    "utc_offset": "+3",
+    "working_hours": {
+        "start": "", "end": ""
+    },
+    "booked": [
+        {
+            "start": "", "end": ""
+        }
+    ]
+}
