@@ -18,6 +18,7 @@ var data = [
             "start": "7AM", "end": "4PM"
         },
         "booked": [
+            { "start": "24th Mar 9PM", "end": "24th Mar 11PM" }
         ]
     }
 ];

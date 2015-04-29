@@ -35,66 +35,69 @@ function get_time_slot_html(i, range){
     return str;
 }
 
-
+/**
+ * only shortcut for creating time range from start and end moments
+ *
+ * @param data - { start: moment, end: moment }
+ * @param utc_offset - utc timezone
+ * @returns {range|*}
+ */
 function get_range(data, utc_offset){
     var start = moment(data.start, "DD MMM h:mm A").utc(utc_offset);
     var end = moment(data.end, "DD MMM h:mm A").utc(utc_offset);
     return moment().range(start, end);
 }
 
-function get_range_moments(moment_start, moment_end, utc_offset){
-    var start = moment_start.utc(utc_offset);
-    var end = moment_end.utc(utc_offset);
-    return moment().range(start, end);
-}
-
-var options = {
-    utc_offset: "+0",
-    meeting_length: 240, /* in minutes */
-    number_possible_time_slots: 0, /* how much slots to return, 0 == all */
-    time_frame: {
-        start: "24th Mar 6:20AM", end: "29th Mar 6:20PM"
-    }
-};
-
-
-
-
-//get_range(options.time_frame, "+3").by('days', function(m) {
 //
-//    var start_hour = moment("8AM", "ha").get("hour");
-//    var end_hour = moment("6PM", "ha").get("hour");
-//    var work_hours_range = get_range_moments(m.clone().hour(start_hour), m.clone().hour(end_hour), "+3");
 //
-//});
-
-
+//working with booked times (subtract)
 var ranges = [get_range(options.time_frame, options.utc_offset)];
 var range_book = {};
 var ranges_sub = [];
 var ranges_result = [];
 
-for (i=0; i<data[0].booked.length; i++) {
-    range_book = get_range(data[0].booked[i], data[0].utc_offset);
-    for (var j=0; j<ranges.length; j++){
-        ranges_sub = ranges[j].subtract(range_book);
-        ranges_result = ranges_result.concat(ranges_sub);
+for (var k=0; k<data.length; k++) {
+    for (i=0; i<data[k].booked.length; i++) {
+        range_book = get_range(data[k].booked[i], data[k].utc_offset);
+        for (var j=0; j<ranges.length; j++){
+            ranges_sub = ranges[j].subtract(range_book);
+            ranges_result = ranges_result.concat(ranges_sub);
+        }
+        ranges = ranges_result;
+        ranges_result = [];
     }
-    ranges = ranges_result;
-    ranges_result = [];
 }
 
-
-
+//calculate and write final working hours
 var final_working_hours = get_working_hours_moments(data);
 $("#start_w_h").val(final_working_hours[0].format("h:mm A"));
 $("#end_w_h").val(final_working_hours[1].format("h:mm A"));
 
+var moment_start_work_today = moment(final_working_hours[0], "h:mm A");
+var moment_end_work_today = moment(final_working_hours[0], "h:mm A");
+
+//write initial time-frame parameters
 $("#start_t_f").val(moment(options.time_frame.start, "DD MMM h:mm A").utc(options.utc_offset).format("DD MMM h:mm A"));
 $("#end_t_f").val(moment(options.time_frame.end, "DD MMM h:mm A").utc(options.utc_offset).format("DD MMM h:mm A"));
 
+
+var tmp_start = {};
+var tmp_end = {};
 for (i=0; i<ranges.length; i++){
+
+    //working with working times
+    tmp_start = ranges[i].start.clone().set({hour: moment_start_work_today.hour(), minute: moment_start_work_today.minutes()});
+    tmp_end = ranges[i].end.clone({hour: moment_end_work_today.hour(), minute: moment_end_work_today.minutes()});
+    ranges[i].start = moment.max(ranges[i].start, tmp_start);
+    ranges[i].end = moment.max(ranges[i].end, tmp_end);
+
+    //filter my meeting duration
     if (moment.duration(ranges[i].end.diff(ranges[i].start)).asMinutes() >= options.meeting_length) {
-        $("#time_slots").append(get_time_slot_html(i, ranges[i]));
+
+        //write only first options.number_possible_time_slots time slots
+        if (options.number_possible_time_slots === false || --options.number_possible_time_slots >= 0){
+            $("#time_slots").append(get_time_slot_html(i, ranges[i]));
+        }
+
     }
 }
