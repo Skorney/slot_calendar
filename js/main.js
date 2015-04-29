@@ -50,7 +50,7 @@ function get_range_moments(moment_start, moment_end, utc_offset){
 
 var options = {
     utc_offset: "+0",
-    meeting_length: 120, /* in minutes */
+    meeting_length: 240, /* in minutes */
     number_possible_time_slots: 0, /* how much slots to return, 0 == all */
     time_frame: {
         start: "24th Mar 6:20AM", end: "29th Mar 6:20PM"
@@ -94,5 +94,7 @@ $("#start_t_f").val(moment(options.time_frame.start, "DD MMM h:mm A").utc(option
 $("#end_t_f").val(moment(options.time_frame.end, "DD MMM h:mm A").utc(options.utc_offset).format("DD MMM h:mm A"));
 
 for (i=0; i<ranges.length; i++){
-    $("#time_slots").append(get_time_slot_html(i, ranges[i]));
+    if (moment.duration(ranges[i].end.diff(ranges[i].start)).asMinutes() >= options.meeting_length) {
+        $("#time_slots").append(get_time_slot_html(i, ranges[i]));
+    }
 }
