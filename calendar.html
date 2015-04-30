@@ -13,29 +13,21 @@
 </head>
 <body>
 
-
-
     <div class="container" style="margin-top: 100px">
-    <div class="panel panel-default">
-        <div class="panel-heading">time-slots meeting calendar [results] <span class="pull-right">v.0.0.1</span></div>
+        <div class="panel panel-default">
+        <div class="panel-heading">time-slots meeting calendar [results] <span class="pull-right">v.0.0.1 (without handling UTC offsets)</span></div>
         <div class="panel-body">
             <form action="" class="form-horizontal">
 
                 <div class='row'>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">All at work from:</label>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <input id="start_w_h" placeholder="start" class="form-control" type="text" value="" />
-                                <div class="input-group-addon">UTC ±0</div>
-                            </div>
+                        <div class="col-sm-2">
+                            <input id="start_w_h" placeholder="start" class="form-control" type="text" value="" />
                         </div>
                         <p class="help-block pull-left"> - </p>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <input id="end_w_h" placeholder="end" class="form-control" type="text" value="" />
-                                <div class="input-group-addon">UTC ±0</div>
-                            </div>
+                        <div class="col-sm-2">
+                            <input id="end_w_h" placeholder="end" class="form-control" type="text" value="" />
                         </div>
                         <p class="help-block">(final working hours)</p>
                     </div>
@@ -44,18 +36,12 @@
                 <div class='row'>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Initial time-frame:</label>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <input id="start_t_f" placeholder="start" class="form-control" type="text" value="" />
-                                <div class="input-group-addon">UTC ±0</div>
-                            </div>
+                        <div class="col-sm-2">
+                            <input id="start_t_f" placeholder="start" class="form-control" type="text" value="" />
                         </div>
                         <p class="help-block pull-left"> - </p>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <input id="end_t_f" placeholder="end" class="form-control" type="text" value="" />
-                                <div class="input-group-addon">UTC ±0</div>
-                            </div>
+                        <div class="col-sm-2">
+                            <input id="end_t_f" placeholder="end" class="form-control" type="text" value="" />
                         </div>
                         <p class="help-block"></p>
                     </div>
@@ -73,17 +59,15 @@
             </form>
         </div>
     </div>
-</div>
-
-
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/moment-range.min.js"></script>
 
-    <script src="js/options.json.js"></script>
-    <script src="js/data.json.js"></script>
+    <script src="json_data/options.js"></script>
+    <script src="json_data/data.js"></script>
 
     <script src="js/main.js"></script>
 

@@ -1,5 +1,4 @@
 var options = {
-    utc_offset: "+0",
     meeting_length: 20, /* in minutes */
     number_possible_time_slots: false, /* how much slots to return, false == all */
     time_frame: {
